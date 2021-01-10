@@ -1,0 +1,84 @@
+CREATE TABLE dbo.Serie (
+        
+	idSerie INT NOT NULL,
+	precioCapitulo DECIMAL(10,2) NOT NULL,
+	nombre CHAR(20) NOT NULL,
+	disponible BIT NOT NULL,
+	sinopsis VARCHAR(50) NOT NULL,
+	creadores VARCHAR(50) NOT NULL,
+	actores VARCHAR(50) NOT NULL,
+	serie_fk INT NOT NULL,
+	PRIMARY KEY (idSerie),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+    )
+
+CREATE TABLE dbo.Usuario (
+        
+	nUsuario CHAR(10) NOT NULL,
+	contrasena CHAR(10) NOT NULL,
+	IBAN CHAR(32) NOT NULL,
+	
+	PRIMARY KEY (nUsuario),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+    )
+	
+	
+CREATE TABLE dbo.Factura (
+        
+	idFactura INT NOT NULL,
+	mes INT NOT NULL,
+	ano INT NOT NULL
+	
+	PRIMARY KEY (idFactura),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+    )
+	
+CREATE TABLE dbo.Entrada (
+        
+	fechaVisualizacion DATE NOT NULL,
+	numeroTemporada INT NOT NULL,
+	numeroCapitulo INT NOT NULL,
+	cargo DECIMAL (10,2) NOT NULL,
+	
+	PRIMARY KEY (idFactura),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+    )
+	
+CREATE TABLE dbo.MarcadorSerie (
+	temporada INT NOT NULL,
+	ultimoCapitulo INT NOT NULL,
+	
+	PRIMARY KEY (usuario_fk, serie_fk),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+	FOREIGN KEY(usuario_fk) REFERENCES Usuario(nUsuario),
+    )
+	
+	
+CREATE TABLE dbo.SerieEnVisualizacion (
+	capitulosVistos INT NOT NULL,
+	
+	PRIMARY KEY (usuario_fk, serie_fk),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+	FOREIGN KEY(usuario_fk) REFERENCES Usuario(nUsuario),
+    )
+	
+	
+
+CREATE TABLE dbo.Temporada (
+	numeroTemporada INT NOT NULL,
+	idTemporada INT NOT NULL,
+	serie_fk INT NOT NULL,
+	PRIMARY KEY (idTemporada),
+	FOREIGN KEY(serie_fk) REFERENCES Serie(id),
+    )
+
+CREATE TABLE dbo.Capitulo (
+	numeroCapitulo INT NOT NULL,
+	titulo VARCHAR(100) NOT NULL,
+	enlace VARCHAR(100),
+	descripcion VARCHAR(300),
+	id INT NOT NULL,
+	temporada_fk INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(temporada_fk) REFERENCES Temporada(id),
+	)
